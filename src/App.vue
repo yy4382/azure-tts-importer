@@ -1,15 +1,14 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <TTSImporter />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TTSImporter from './components/TTSImporter.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    TTSImporter
   }
 }
 </script>
