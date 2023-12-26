@@ -1,50 +1,64 @@
 <template>
     <div class="tts-importer">
-        <div>
-            <label for="api_key">API Key</label>
-            <input type="text" id="api_key" v-model="apiKey" />
-            <label for="api_region">API Region</label>
-            <input type="text" id="api_region" v-model="apiRegion" />
+        <div id="key-form">
+            <div id="key-region">
+                <div class="key-input">
+                    <label for="api_key">API Key: </label>
+                    <input type="text" id="api_key" v-model="apiKey" />
+                </div>
+                <div class="key-input">
+                    <label for="api_region">API Region: </label>
+                    <input type="text" id="api_region" v-model="apiRegion" />
+                </div>
+            </div>
             <button @click="getVoiceList">提交</button>
         </div>
-        <div style="display: flex; flex-direction: column;">
-            <label for="voiceSelect">声音 (voice)：</label>
-            <select id="voiceSelect" v-model="selectedVoice">
-                <option v-for="item in voiceList" :key="item.ShortName" :value="item">
-                    {{ item.LocalName + " " + item.ShortName }}
-                </option>
-            </select>
+        <div style="display:flex; flex-direction: column; align-items: self-start;">
+            <div>
+                <label for="voiceSelect">声音 (voice)：</label>
+                <select id="voiceSelect" v-model="selectedVoice">
+                    <option v-for="item in voiceList" :key="item.ShortName" :value="item">
+                        {{ item.LocalName + " " + item.ShortName }}
+                    </option>
+                </select>
+            </div>
+            <div>
+                <div style="display: flex;flex-direction: row; align-items: self-start;">
+                    <input type="checkbox" id="useVoiceStyle" v-model="useVoiceStyle" :disabled="!hasStyle" />
+                    <label for="useVoiceStyle" v-if="hasStyle">使用声音风格</label>
+                    <label for="useVoiceStyle" v-else>使用声音风格（禁用，该声音没有风格）</label>
+                </div>
+                <div v-if="useVoiceStyle">
+                    <label style="align-items: self-start;" for="voiceStyleSelect">声音风格 (voiceStyle)：</label>
+                    <select id="voiceStyleSelect" v-model="selectedVoiceStyle">
+                        <option v-for="style in selectedVoice.VoiceStyleNames" :key="style" :value="style">{{ style }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label for="rateRange">语速 (rate)：</label>
+                <select name="sudo" id="rateRange" v-model="selectedRate">
+                    <option value="default">默认 (default)</option>
+                    <option value="x-slow">极低 (x-slow)</option>
+                    <option value="slow">低 (slow)</option>
+                    <option value="medium">中 (medium)</option>
+                    <option value="fast">高 (fast)</option>
+                    <option value="x-fast">极高 (x-fast)</option>
+                </select>
+            </div>
+            <div>
+                <label for="pitchRange">音调(pitch)：</label>
+                <select name="sudo" id="pitchRange" v-model="selectedPitch">
+                    <option value="default">默认 (default)</option>
+                    <option value="x-low">极低 (x-low)</option>
+                    <option value="low">低 (low)</option>
+                    <option value="medium">中 (medium)</option>
+                    <option value="high">高 (high)</option>
+                    <option value="x-high">极高 (x-high)</option>
+                </select>
+            </div>
         </div>
-        <div>
-            <input type="checkbox" id="useVoiceStyle" v-model="useVoiceStyle" :disabled="!hasStyle" />
-            <label for="useVoiceStyle" v-if="hasStyle">使用声音风格</label>
-            <label for="useVoiceStyle" v-else>使用声音风格（禁用，该声音没有风格）</label>
-        </div>
-
-        <div v-if="useVoiceStyle">
-            <label for="voiceStyleSelect">声音风格 (voiceStyle)：</label>
-            <select id="voiceStyleSelect" v-model="selectedVoiceStyle">
-                <option v-for="style in selectedVoice.VoiceStyleNames" :key="style" :value="style">{{ style }}</option>
-            </select>
-        </div>
-        <label for="rateRange">语速 (rate)：</label>
-        <select name="sudo" id="rateRange" v-model="selectedRate">
-            <option value="default">默认 (default)</option>
-            <option value="x-slow">极低 (x-slow)</option>
-            <option value="slow">低 (slow)</option>
-            <option value="medium">中 (medium)</option>
-            <option value="fast">高 (fast)</option>
-            <option value="x-fast">极高 (x-fast)</option>
-        </select>
-        <label for="pitchRange">音调(pitch)：</label>
-        <select name="sudo" id="pitchRange" v-model="selectedPitch">
-            <option value="default">默认 (default)</option>
-            <option value="x-low">极低 (x-low)</option>
-            <option value="low">低 (low)</option>
-            <option value="medium">中 (medium)</option>
-            <option value="high">高 (high)</option>
-            <option value="x-high">极高 (x-high)</option>
-        </select>
     </div>
     <button @click="copyLegadoConfig">复制配置</button>
 </template>
@@ -162,12 +176,12 @@ export default {
                 "name": "test",
                 "url": `https://${self.apiRegion}.tts.speech.microsoft.com/cognitiveservices/v1,${JSON.stringify(urlConfig)}`
             }
-            return config
+            return JSON.stringify(config)
         },
         copyLegadoConfig() {
             let config = this.generateLegadoConfig()
             try {
-                navigator.clipboard.writeText(JSON.stringify(config));
+                navigator.clipboard.writeText(config);
             } catch (err) {
                 console.log(err)
                 alert("复制失败，请手动复制")
@@ -176,3 +190,42 @@ export default {
     }
 }
 </script>
+<style>
+.tts-importer {
+    display: flex;
+    flex-direction: column;
+    margin: 0 3vw;
+}
+
+#key-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+#key-region {
+    display: flex;
+    flex-direction: column;
+    margin: 1em 0;
+    padding: 0 1em;
+    background-color: aquamarine;
+    border-radius: 1rem;
+}
+.key-input {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    margin-right: 1em;
+    padding: 3px 0;
+}
+
+button {
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+</style>

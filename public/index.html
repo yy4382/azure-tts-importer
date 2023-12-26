@@ -16,39 +16,63 @@
     <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
         Please enable it to continue.</strong>
   </noscript>
-  <nav>
-    <h1>Azure TTS 听书配置生成器</h1>
-    <!-- Place this tag where you want the button to render. -->
-    <div style="align-self: center;">
-      <a class="github-button" href="https://github.com/yy4382/azure-tts-importer"
-        data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-star" data-size="large"
-        data-show-count="true" aria-label="Star yy4382/azure-tts-importer on GitHub">Star</a>
+  <div id="content">
+    <nav>
+      <h1>听书配置生成器</h1>
+      <!-- Place this tag where you want the button to render. -->
+      <div style="align-self: center;">
+        <a class="github-button" href="https://github.com/yy4382/azure-tts-importer"
+          data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-star" data-size="large"
+          data-show-count="true" aria-label="Star yy4382/azure-tts-importer on GitHub">Star</a>
+      </div>
+    </nav>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+    <div id="notice">
+      <p>Notice：</p>
+      <p>- 所有配置生成工作全部在本地浏览器上进行，不会上传配置的任何部分</p>
+      <p>- 如果使用“阅读”系的阅读器，速度条件不会生效，会由 APP 自己控制</p>
+      <p>- 没有 API key？生成了配置不知道怎么用？<a href="https://blog.yfi.moe">点击查看教程（现在还没写）</a></p>
+      <p>- 试听功能在做了在做了</p>
+      <p>- 一键导入也在做了，但是有些麻烦</p>
     </div>
-  </nav>
-  <div id="app"></div>
-  <!-- built files will be auto injected -->
-  <div id="notice">
-    <p>注意：</p>
-    <p>- 所有配置生成工作全部在本地浏览器上进行，不会上传配置的任何部分</p>
-    <p>- 如果使用“阅读”系的阅读器，速度条件不会生效，会由 APP 自己控制</p>
-    <p>- 没有 API key？生成了配置不知道怎么用？<a href="https://blog.yfi.moe">点击查看教程（现在还没写）</a></p>
-    <p>- 试听功能在做了在做了</p>
   </div>
   <footer>
-    <p>Source @ <a herf="https://https://github.com/yy4382/azure-tts-importer">GitHub</a></p>
+    <p>Source @ <a href="https://github.com/yy4382/azure-tts-importer">GitHub</a></p>
     <p style="display: flex;">如果遇到问题，欢迎提
-      <span style="align-self: center;"><a class="github-button" href="https://github.com/yy4382/azure-tts-importer/issues"
-        data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-issue-opened"
-        aria-label="Issue yy4382/azure-tts-importer on GitHub">Issue</a></span>
+      <span style="align-self: center;"><a class="github-button"
+          href="https://github.com/yy4382/azure-tts-importer/issues"
+          data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-issue-opened"
+          aria-label="Issue yy4382/azure-tts-importer on GitHub">Issue</a></span>
     </p>
     <p>© 2023 <a href="https://yfi.moe">Yunfi</a></p>
   </footer>
 </body>
 <style>
+  html body {
+    min-height: 100vh;
+    margin: 0;
+  }
+
+  #content {
+    min-height: 100vh;
+    margin-bottom: -100px;
+  }
+
+  #content::after {
+    content: "";
+    display: block;
+  }
+
+  footer,
+  #content::after {
+    height: 100px;
+    clear: both;
+  }
+
   nav {
     display: flex;
     justify-content: space-between;
-    border-bottom: 2px;
     padding: 0 3vw;
   }
 
@@ -59,9 +83,11 @@
     align-items: center; */
     padding: 0 4vw;
   }
+
   footer {
-    position: absolute;
-    bottom: 0;
+    height: 100px;
+    clear: both;
+
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -69,6 +95,7 @@
     align-items: center;
     padding: 0 3vw;
   }
+
   footer p {
     margin: 3px;
   }
