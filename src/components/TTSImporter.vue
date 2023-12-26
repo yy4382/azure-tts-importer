@@ -61,7 +61,8 @@
         </div>
     </div>
     <button @click="copyLegadoConfig">复制配置</button>
-    <button @click="copyLegadoLink">复制网络导入链接</button>
+    <button @click="copyLegadoLink">复制阅读网络导入链接</button>
+    <button @click="copySourceReaderLink">复制 Source Reader 导入链接</button>
     <button @click="import2Legado">一键导入到 Legado</button>
 </template>
 
@@ -146,7 +147,7 @@ export default {
                 console.log(err)
             })
         },
-        generateLegadoConfig() {
+        generateLegadoConfig(stringFormat = true) {
             let header = {
                 "Ocp-Apim-Subscription-Key": this.apiKey,
                 "Content-Type": "application/ssml+xml",
@@ -171,14 +172,19 @@ export default {
                 "concurrentRate": "0",
                 "contentType": "audio/mpeg",
                 "header": JSON.stringify(header),
-                "id": 1642068899362,
+                "id": Date.now() + "",
                 "loginCheckJs": "",
                 "loginUi": "",
                 "loginUrl": "",
                 "name": `Azure ${this.selectedVoice.LocalName}${this.selectedVoiceStyle || ""}${this.selectedPitch === "default" ? "" : " - " + this.selectedPitch}`,
                 "url": `https://${self.apiRegion}.tts.speech.microsoft.com/cognitiveservices/v1,${JSON.stringify(urlConfig)}`
             }
-            return JSON.stringify(config)
+            if (stringFormat) {
+                return JSON.stringify(config)
+            }
+            else {
+                return config
+            }
         },
         copyLegadoConfig() {
             let config = this.generateLegadoConfig()
@@ -189,9 +195,9 @@ export default {
                 alert("复制失败，请手动复制")
             }
         },
-        copyLegadoLink(){
+        copyLegadoLink() {
             let config = this.generateLegadoConfig()
-            let link = `${window.location.host}/api/legado?config=${encodeURIComponent(config)}`
+            let link = `${window.location.protocol}//${window.location.host}/api/legado?config=${encodeURIComponent(config)}`
             try {
                 navigator.clipboard.writeText(link);
             } catch (err) {
@@ -199,7 +205,19 @@ export default {
                 alert("复制失败，请手动复制")
             }
         },
-        import2Legado(){
+        copySourceReaderLink() {
+            let config = this.generateLegadoConfig(false)
+            config = [config]
+            config = JSON.stringify(config)
+            let link = `${window.location.protocol}//${window.location.host}/api/legado?config=${encodeURIComponent(config)}`
+            try {
+                navigator.clipboard.writeText(link);
+            } catch (err) {
+                console.log(err)
+                alert("复制失败，请手动复制")
+            }
+        },
+        import2Legado() {
             let config = this.generateLegadoConfig()
             let link = `${window.location.host}/api/legado?config=${encodeURIComponent(config)}`
             let leagdoLink = `legado://import/httpTTS?src=${encodeURIComponent(link)}`
