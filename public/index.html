@@ -9,6 +9,9 @@
   <title>Azure TTS 听书配置生成器</title>
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <% if (process.env.NODE_ENV==='production' ) { %>
+    <script defer data-domain="tts-importer.yfi.moe" src="https://analy.yfi.moe/js/script.js"></script>
+    <% } %>
 </head>
 
 <body>
