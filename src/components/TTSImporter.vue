@@ -11,7 +11,7 @@
                     <input type="text" id="api_region" v-model="apiRegion" />
                 </div>
             </div>
-            <button @click="getVoiceList">提交</button>
+            <button @click="getVoiceList">获取声音列表</button>
         </div>
         <div style="display:flex; flex-direction: column; align-items: self-start;">
             <div>
@@ -60,10 +60,13 @@
             </div>
         </div>
     </div>
-    <button @click="copyLegadoConfig">复制配置</button>
+    <button @click="copyLegadoConfig">复制阅读配置</button>
     <button @click="copyLegadoLink">复制阅读网络导入链接</button>
-    <button @click="copySourceReaderLink">复制 Source Reader 导入链接</button>
     <button @click="import2Legado">一键导入到 Legado</button>
+    <br>
+    <button @click="copyAiyueConfig">复制爱阅记配置</button>
+    <br>
+    <button @click="copySourceReaderLink">复制源阅读网络导入链接</button>
 </template>
 
 <script>
@@ -147,6 +150,68 @@ export default {
                 console.log(err)
             })
         },
+        generateAiyueConfig() {
+            let pitch = null
+            if (this.selectedPitch !== "default") {
+                pitch = this.selectedPitch
+            }
+            let ssml = `<speak version="1.0" xml:lang="zh-CN"><voice name="${this.selectedVoice.ShortName}">${pitch ? `<prosody pitch="${this.selectedPitch}">` : ""}${this.useVoiceStyle ? `<mstts:express-as style="${this.selectedVoiceStyle}">` : ""}%@${this.useVoiceStyle ? `</mstts:express-as>` : ""}${pitch ? `</prosody>` : ""}</voice></speak>`
+            let config = {
+                "loginUrl": "",
+                "maxWordCount": "",
+                "ttsConfigGroup": "Azure",
+                "_ClassName": "JxdAdvCustomTTS",
+                "_TTSConfigID": "97b36d050daf80f176ceb40b254c3aa5",
+                "httpConfigs":
+                {
+                    "useCookies": 1,
+                    "headers": {}
+                },
+                "ttsHandles":
+                    [
+                        {
+                            "processType": 1,
+                            "maxPageCount": 1,
+                            "nextPageForGetMedthod": 1,
+                            "forGetMethod": 0,
+                            "requestByWebView": 0,
+                            "nextPageParams":
+                                {},
+                            "parser":
+                            {
+                                "playData": "ResponseData"
+                            },
+                            "url": `https://${this.apiRegion}.tts.speech.microsoft.com/cognitiveservices/v1`,
+                            "params":
+                            {
+                                "text": ssml
+                            },
+                            "httpConfigs":
+                            {
+                                "useCookies": 1,
+                                "customFormatParams": "params[text]",
+                                "headers":
+                                {
+                                    "Content-Type": "application/ssml+xml",
+                                    "X-Microsoft-OutputFormat": "audio-16khz-128kbitrate-mono-mp3",
+                                    "ocp-apim-subscription-key": `${this.apiKey}`
+                                }
+                            }
+                        }
+                    ],
+                "_TTSName": `Azure ${this.selectedVoice.LocalName}${this.selectedVoiceStyle || ""}${this.selectedPitch === "default" ? "" : " - " + this.selectedPitch}`
+            }
+            return JSON.stringify(config)
+        },
+        copyAiyueConfig() {
+            let config = this.generateAiyueConfig()
+            try {
+                navigator.clipboard.writeText(config);
+            } catch (err) {
+                console.log(err)
+                alert("复制失败")
+            }
+        },
         generateLegadoConfig(stringFormat = true) {
             let header = {
                 "Ocp-Apim-Subscription-Key": this.apiKey,
@@ -172,7 +237,7 @@ export default {
                 "concurrentRate": "0",
                 "contentType": "audio/mpeg",
                 "header": JSON.stringify(header),
-                "id": parseInt(Date.now() + "",10),
+                "id": parseInt(Date.now() + "", 10),
                 "loginCheckJs": "",
                 "loginUi": "",
                 "loginUrl": "",
@@ -192,7 +257,7 @@ export default {
                 navigator.clipboard.writeText(config);
             } catch (err) {
                 console.log(err)
-                alert("复制失败，请手动复制")
+                alert("复制失败")
             }
         },
         copyLegadoLink() {
