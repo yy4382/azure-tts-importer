@@ -219,7 +219,7 @@ export default {
         },
         import2Legado() {
             let config = this.generateLegadoConfig()
-            let link = `${window.location.host}/api/legado?config=${encodeURIComponent(config)}`
+            let link = `${window.location.protocol}//${window.location.host}/api/legado?config=${encodeURIComponent(config)}`
             let leagdoLink = `legado://import/httpTTS?src=${encodeURIComponent(link)}`
             window.open(leagdoLink, "_blank")
         }
