@@ -1,0 +1,16 @@
+# Caddyfile example
+# for dev use only
+# modify `localhost:8079` and root path in production environment
+localhost:8079 {
+    root * dist
+    file_server
+
+    @legado path /api/legado
+    handle @legado {
+        @hasConfig query config=*
+        header Content-Type application/json
+        respond @hasConfig "{http.request.uri.query.config}" {  
+        }
+        respond "Missing 'config' query parameter" 400
+    }
+}

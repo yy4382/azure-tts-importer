@@ -61,6 +61,8 @@
         </div>
     </div>
     <button @click="copyLegadoConfig">复制配置</button>
+    <button @click="copyLegadoLink">复制网络导入链接</button>
+    <button @click="import2Legado">一键导入到 Legado</button>
 </template>
 
 <script>
@@ -187,6 +189,22 @@ export default {
                 alert("复制失败，请手动复制")
             }
         },
+        copyLegadoLink(){
+            let config = this.generateLegadoConfig()
+            let link = `${window.location.host}/api/legado?config=${encodeURIComponent(config)}`
+            try {
+                navigator.clipboard.writeText(link);
+            } catch (err) {
+                console.log(err)
+                alert("复制失败，请手动复制")
+            }
+        },
+        import2Legado(){
+            let config = this.generateLegadoConfig()
+            let link = `${window.location.host}/api/legado?config=${encodeURIComponent(config)}`
+            let leagdoLink = `legado://import/httpTTS?src=${encodeURIComponent(link)}`
+            window.open(leagdoLink, "_blank")
+        }
     }
 }
 </script>
@@ -215,7 +233,7 @@ export default {
 .key-input {
     display: flex;
     flex-direction: row;
-    align-items: start;
+    align-items: flex-start;
     margin-right: 1em;
     padding: 3px 0;
 }
