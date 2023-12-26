@@ -177,7 +177,7 @@ export default {
                 "loginUi": "",
                 "loginUrl": "",
                 "name": `Azure ${this.selectedVoice.LocalName}${this.selectedVoiceStyle || ""}${this.selectedPitch === "default" ? "" : " - " + this.selectedPitch}`,
-                "url": `https://${self.apiRegion}.tts.speech.microsoft.com/cognitiveservices/v1,${JSON.stringify(urlConfig)}`
+                "url": `https://${this.apiRegion}.tts.speech.microsoft.com/cognitiveservices/v1,${JSON.stringify(urlConfig)}`
             }
             if (stringFormat) {
                 return JSON.stringify(config)
