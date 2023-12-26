@@ -173,7 +173,7 @@ export default {
                 "loginCheckJs": "",
                 "loginUi": "",
                 "loginUrl": "",
-                "name": "test",
+                "name": `Azure ${this.selectedVoice.LocalName}${this.selectedVoiceStyle || ""}${this.selectedPitch === "default" ? "" : " - " + this.selectedPitch}`,
                 "url": `https://${self.apiRegion}.tts.speech.microsoft.com/cognitiveservices/v1,${JSON.stringify(urlConfig)}`
             }
             return JSON.stringify(config)
@@ -202,6 +202,7 @@ export default {
     flex-direction: row;
     justify-content: center;
 }
+
 #key-region {
     display: flex;
     flex-direction: column;
@@ -210,6 +211,7 @@ export default {
     background-color: aquamarine;
     border-radius: 1rem;
 }
+
 .key-input {
     display: flex;
     flex-direction: row;
