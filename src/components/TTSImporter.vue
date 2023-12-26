@@ -172,7 +172,7 @@ export default {
                 "concurrentRate": "0",
                 "contentType": "audio/mpeg",
                 "header": JSON.stringify(header),
-                "id": Date.now() + "",
+                "id": parseInt(Date.now() + "",10),
                 "loginCheckJs": "",
                 "loginUi": "",
                 "loginUrl": "",
