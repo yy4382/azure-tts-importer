@@ -150,6 +150,15 @@ export default {
                 console.log(err)
             })
         },
+        generateRandomString(length) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            const charactersLength = characters.length;
+            for (let i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
+        },
         generateAiyueConfig() {
             let pitch = null
             if (this.selectedPitch !== "default") {
@@ -161,7 +170,7 @@ export default {
                 "maxWordCount": "",
                 "ttsConfigGroup": "Azure",
                 "_ClassName": "JxdAdvCustomTTS",
-                "_TTSConfigID": "97b36d050daf80f176ceb40b254c3aa5",
+                "_TTSConfigID": this.generateRandomString(32),
                 "httpConfigs":
                 {
                     "useCookies": 1,
