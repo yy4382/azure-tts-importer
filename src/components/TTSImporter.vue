@@ -228,16 +228,15 @@ export default {
                 "X-Microsoft-OutputFormat": "audio-16khz-128kbitrate-mono-mp3",
                 "User-Agent": "legado"
             }
-            let ssml = `
-            <speak version="1.0" xml:lang="zh-CN">
-                <voice name="${this.selectedVoice.ShortName}">
-                    <prosody rate="{{speakSpeed*4}}%" pitch="${this.selectedPitch}">
-                        ${this.useVoiceStyle ? `<mstts:express-as style="${this.selectedVoiceStyle}">` : ""}
-                        {{speakText}}
-                        ${this.useVoiceStyle ? `</mstts:express-as>` : ""}
-                    </prosody>
-                </voice>
-            </speak>`
+            let ssml = `<speak version="1.0" xml:lang="zh-CN">` +
+                `<voice name="${this.selectedVoice.ShortName}">` +
+                `<prosody rate="{{speakSpeed*4}}%" pitch="${this.selectedPitch}">` +
+                this.useVoiceStyle ? `<mstts:express-as style="${this.selectedVoiceStyle}">` : "" +
+                `{{speakText}}` +
+                this.useVoiceStyle ? `</mstts:express-as>` : "" +
+                `</prosody>` +
+                `</voice>` +
+                `</speak>`
             let urlConfig = {
                 method: "POST",
                 body: ssml
